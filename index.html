@@ -29,8 +29,8 @@
 
       const canvasWidth = 960,
             canvasHeight = 500,
-            defaultNodeWidth = 10,
-            defaultNodeHeight = 10;
+            defaultNodeWidth = 60,
+            defaultNodeHeight = 50;
 
       const canvasSize = [canvasWidth, canvasHeight];
 
@@ -45,7 +45,12 @@
           .attr("height", canvasHeight);
 
       const graph = {
-          nodes: [{}, {}, {}, {}],
+          nodes: [
+              {content: "0"},
+              {content: "1"},
+              {content: "2"},
+              {content: "3"},
+          ],
           links: [
               {source: 0, target: 1},
               {source: 0, target: 2},
@@ -55,8 +60,8 @@
       };
 
       graph.nodes.forEach(function (v) {
+          v.width = v.width || defaultNodeWidth;
           v.height = v.height || defaultNodeHeight;
-          v.width = v.width || defaultNodeHeight;
       });
 
       d3cola
@@ -87,13 +92,13 @@
           .data(graph.nodes)
           .enter().append("rect")
               .attr("class", "node")
-              .attr("width", function (d) { return d.width; })
-              .attr("height", function (d) { return d.height; })
+              .attr("width", function (d) {return d.width;})
+              .attr("height", function (d) {return d.height;})
               .style("fill", function (d) { return color(d.group); })
               .call(d3cola.drag);
 
       node.append("title")
-          .text(function (d) { return d.name; });
+          .text(function (d) { return d.content; });
 
       d3cola.on("tick", function () {
           path.each(function (d) {
@@ -115,8 +120,8 @@
               return 'M' + sourceX + ',' + sourceY + 'L' + targetX + ',' + targetY;
           });
 
-          node.attr("cx", function (d) { return d.x; })
-              .attr("cy", function (d) { return d.y; });
+          node.attr("x", function (d) { return d.x - d.width / 2; })
+              .attr("y", function (d) { return d.y - d.height / 2; });
       });
       // turn on overlap avoidance after first convergence
       //cola.on("end", function () {
