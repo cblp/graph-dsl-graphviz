@@ -1,12 +1,7 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
-module GraphBuilder
-    ( GraphBuilder
-    , buildGraph
-    , edge
-    , edge_
-    , node
-    ) where
+module Data.Graph.Builder.Graphviz
+    (GraphBuilder, Node, buildGraph, edge, edge_, node) where
 
 import Control.Monad.State
 import Data.Graph.Inductive (Node)
