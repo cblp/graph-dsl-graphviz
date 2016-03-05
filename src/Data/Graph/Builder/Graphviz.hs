@@ -8,7 +8,7 @@ import Data.Graph.Inductive (Node)
 import qualified Data.Graph.Inductive as Graph
 -- import Data.Graph.Inductive.NodeMap as Graph
 import Data.Graph.Inductive.PatriciaTree
-import Data.GraphViz (DotGraph, graphToDot, nonClusteredParams)
+import Data.GraphViz (DotGraph, fmtNode, graphToDot, nonClusteredParams)
 import Data.GraphViz.Attributes.Complete
 import Data.Map
 -- import Data.Text.Lazy
@@ -55,9 +55,9 @@ edge_ :: (Node, Node) -> GraphBuilderM Edge
 edge_ ns = edge ns []
 
 buildGraph :: GraphBuilder -> DotGraph Node
-buildGraph builder =
-    graphToDot graphvizParams . graph $ execState builder newBuilder
-  where
+buildGraph builder = let
+    BuilderState{graph, nodeAttributes{-, edgeAttributes-}} =
+        execState builder newBuilder
     graphvizParams = nonClusteredParams
-        -- { fmtNode = \(_node, nodeLabel) -> [Label $ StrLabel nodeLabel]
-        -- }
+        { fmtNode = \(nodeId, ()) -> nodeAttributes ! nodeId }
+    in graphToDot graphvizParams graph

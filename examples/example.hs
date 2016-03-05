@@ -13,4 +13,4 @@ graph = buildGraph $ do
     void $ edge_ (task1, ipsum)
 
 main :: IO ()
-main = void $ runGraphviz graph DotOutput "/dev/stdout"
+main = void $ runGraphviz graph Svg "/dev/stdout"
