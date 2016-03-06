@@ -15,7 +15,7 @@ import Data.GraphViz.Attributes.HTML as HTML  ( Align(HLeft)
                                               , TextItem(Format, Newline, Str)
                                               )
 import qualified Data.Text.Lazy as Text
-import GHC.Exts (IsString(fromString))
+import Data.String (IsString(fromString))
 
 instance IsString TextItem where
     fromString = Str . fromString

@@ -1,14 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Control.Monad (void)
-import Data.Foldable
 import Data.Graph.Builder.GraphViz
 import Data.GraphViz (DotGraph, GraphvizOutput(Svg), runGraphviz)
 import Data.GraphViz.Attributes.Complete
 import Data.GraphViz.Helpers
 
-graph :: DotGraph Node
-graph = digraph [RankDir FromLeft] $ do
+mytasks :: DotGraph Node
+mytasks = digraph [RankDir FromLeft] $ do
     t1 <- node
         [ labelHtml [ bold "Lorem ipsum dolor sit amet,",   newlineLeft
                     , "consectetur adipisicing elit,",      newlineLeft
@@ -33,15 +32,18 @@ graph = digraph [RankDir FromLeft] $ do
     void $ edges' [t1, t3, t4]
     p <- node [label "Lorem ipsum"]
     void $ edge' (t4, p)
-    for_  [ "dolor sit amet"
-          , "consectetur adipisicing elit"
-          , "sed do eiusmod tempor incididunt"
-          , "ut labore et dolore magna aliqua"
-          , "Ut enim ad minim veniam"
-          , "quis nostrud exercitation ullamco"
-          ] $ \text -> do
-              atask <- node [label text]
-              edge' (atask, p)
+    t5 <- node [label "dolor sit amet"]
+    void $ edge' (t5, p)
+    t6 <- node [label "consectetur adipisicing elit"]
+    void $ edge' (t6, p)
+    t7 <- node [label "sed do eiusmod tempor incididunt"]
+    void $ edge' (t7, p)
+    t8 <- node [label "ut labore et dolore magna aliqua"]
+    void $ edge' (t8, p)
+    t9 <- node [label "Ut enim ad minim veniam"]
+    void $ edge' (t9, p)
+    t10 <- node [label "quis nostrud exercitation ullamco"]
+    void $ edge' (t10, p)
 
 main :: IO ()
-main = void $ runGraphviz graph Svg "/dev/stdout"
+main = void $ runGraphviz mytasks Svg "/dev/stdout"
