@@ -39,23 +39,23 @@ mytasks = digraph [RankDir FromLeft] $ do
         , "quis nostrud exercitation ullamco" ]
 
   where
-    boxNode attrs = node (shape BoxShape : attrs)
+    boxNode attrs = node (shape BoxShape : style filled : attrs)
 
-    project name = boxNode [style filled, fillColor LightYellow, label name]
+    project name = boxNode [fillColor Pink, label name]
 
-    task textLines = boxNode [content]
+    task textLines = boxNode [fillColor LightYellow, content]
       where
         content = case textLines of
-            [] -> label "<no text>"
+            []        -> label "<no text>"
             [oneLine] -> label oneLine
-            _ -> labelHtml $ let
+            _         -> labelHtml $ let
                 firstLine : otherLines = map Str textLines
                 htmlLines = formatBold [firstLine] : otherLines
                 in concatMap (: [newlineLeft]) htmlLines
 
     taskWithProject prjNode textLines = do
         tsk <- task textLines
-        void $ edge' (tsk, prjNode)
+        tsk --> prjNode
         pure tsk
 
 main :: IO ()

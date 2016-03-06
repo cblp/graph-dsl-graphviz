@@ -1,7 +1,7 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
 module Data.Graph.Builder.GraphViz
-    (GraphBuilder, Node, digraph, edge, edge', edges, edges', node) where
+    (GraphBuilder, Node, (-->), digraph, edge, edge', edges, edges', node) where
 
 import Control.Monad.State
 import Data.Graph.Inductive (Node)
@@ -45,8 +45,8 @@ node attrs = do
         }
     pure newNode
 
-edge :: (Node, Node) -> Attributes -> GraphBuilderM Edge
-edge (n1, n2) attrs = do
+edge :: Node -> Node -> Attributes -> GraphBuilderM Edge
+edge n1 n2 attrs = do
     builderState@BuilderState{edgeAttributes, graph} <- get
     let newEdge = fromIntegral $ length edgeAttributes
     put builderState
@@ -56,12 +56,16 @@ edge (n1, n2) attrs = do
     pure newEdge
 
 -- | 'edge' without attributes
-edge' :: (Node, Node) -> GraphBuilderM Edge
-edge' ns = edge ns []
+edge' :: Node -> Node -> GraphBuilderM Edge
+edge' n1 n2 = edge n1 n2 []
+
+-- | 'edge' without attributes and result
+(-->) :: Node -> Node -> GraphBuilder
+n1 --> n2 = void $ edge n1 n2 []
 
 edges :: [Node] -> Attributes -> GraphBuilderM [Edge]
 edges []    _     = pure []
-edges nodes attrs = zipWithM (\n1 n2 -> edge (n1, n2) attrs) nodes (tail nodes)
+edges nodes attrs = zipWithM (\n1 n2 -> edge n1 n2 attrs) nodes (tail nodes)
 
 edges' :: [Node] -> GraphBuilderM [Edge]
 edges' nodes = edges nodes []

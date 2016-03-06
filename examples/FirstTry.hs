@@ -31,19 +31,19 @@ mytasks = digraph [RankDir FromLeft] $ do
     void $ edges' [t1, t2, t4]
     void $ edges' [t1, t3, t4]
     p <- node [label "Lorem ipsum"]
-    void $ edge' (t4, p)
+    t4 --> p
     t5 <- node [label "dolor sit amet"]
-    void $ edge' (t5, p)
+    t5 --> p
     t6 <- node [label "consectetur adipisicing elit"]
-    void $ edge' (t6, p)
+    t6 --> p
     t7 <- node [label "sed do eiusmod tempor incididunt"]
-    void $ edge' (t7, p)
+    t7 --> p
     t8 <- node [label "ut labore et dolore magna aliqua"]
-    void $ edge' (t8, p)
+    t8 --> p
     t9 <- node [label "Ut enim ad minim veniam"]
-    void $ edge' (t9, p)
+    t9 --> p
     t10 <- node [label "quis nostrud exercitation ullamco"]
-    void $ edge' (t10, p)
+    t10 --> p
 
 main :: IO ()
 main = void $ runGraphviz mytasks Svg "/dev/stdout"
