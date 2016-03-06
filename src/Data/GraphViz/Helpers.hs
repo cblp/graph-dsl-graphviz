@@ -12,10 +12,7 @@ import Data.GraphViz.Attributes.HTML as HTML  ( Align(HLeft)
                                               , Format(Bold)
                                               , Label(Text)
                                               , Text
-                                              , TextItem  ( Newline
-                                                          , Format
-                                                          , Str
-                                                          )
+                                              , TextItem(Newline, Format, Str)
                                               )
 import qualified Data.Text.Lazy as Text
 import Data.String (IsString(fromString))
