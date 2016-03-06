@@ -3,11 +3,12 @@
 import Control.Monad (void)
 import Data.Foldable
 import Data.Graph.Builder.GraphViz
-import Data.GraphViz.Helpers
 import Data.GraphViz (DotGraph, GraphvizOutput(Svg), runGraphviz)
+import Data.GraphViz.Attributes.Complete
+import Data.GraphViz.Helpers
 
 graph :: DotGraph Node
-graph = buildGraph $ do
+graph = digraph [RankDir FromLeft] $ do
     t1 <- node
         [ labelHtml [ bold "Lorem ipsum dolor sit amet,",   newlineLeft
                     , "consectetur adipisicing elit,",      newlineLeft

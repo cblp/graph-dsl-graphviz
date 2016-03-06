@@ -1,14 +1,18 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
 module Data.Graph.Builder.GraphViz
-    (GraphBuilder, Node, buildGraph, edge, edge', edges, edges', node) where
+    (GraphBuilder, Node, digraph, edge, edge', edges, edges', node) where
 
 import Control.Monad.State
 import Data.Graph.Inductive (Node)
 import qualified Data.Graph.Inductive as Graph
 -- import Data.Graph.Inductive.NodeMap as Graph
 import Data.Graph.Inductive.PatriciaTree
-import Data.GraphViz (DotGraph, fmtNode, graphToDot, nonClusteredParams)
+import Data.GraphViz  ( DotGraph
+                      , GlobalAttributes(GraphAttrs)
+                      , GraphvizParams(fmtNode, globalAttributes)
+                      , graphToDot, nonClusteredParams
+                      )
 import Data.GraphViz.Attributes.Complete
 import Data.Map
 -- import Data.Text.Lazy
@@ -62,10 +66,14 @@ edges nodes attrs = zipWithM (\n1 n2 -> edge (n1, n2) attrs) nodes (tail nodes)
 edges' :: [Node] -> GraphBuilderM [Edge]
 edges' nodes = edges nodes []
 
-buildGraph :: GraphBuilder -> DotGraph Node
-buildGraph builder = let
+digraph :: Attributes -- ^ graph attributes
+        -> GraphBuilder
+        -> DotGraph Node
+digraph graphAttributes builder = let
     BuilderState{graph, nodeAttributes{-, edgeAttributes-}} =
         execState builder newBuilder
     graphvizParams = nonClusteredParams
-        { fmtNode = \(nodeId, ()) -> nodeAttributes ! nodeId }
+        { fmtNode = \(nodeId, ()) -> nodeAttributes ! nodeId
+        , globalAttributes = [GraphAttrs graphAttributes]
+        }
     in graphToDot graphvizParams graph
