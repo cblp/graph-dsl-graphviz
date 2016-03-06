@@ -6,7 +6,6 @@ module Data.Graph.Builder.GraphViz
 import Control.Monad.State
 import Data.Graph.Inductive (Node)
 import qualified Data.Graph.Inductive as Graph
--- import Data.Graph.Inductive.NodeMap as Graph
 import Data.Graph.Inductive.PatriciaTree
 import Data.GraphViz  ( DotGraph
                       , GlobalAttributes(GraphAttrs)
@@ -15,7 +14,6 @@ import Data.GraphViz  ( DotGraph
                       )
 import Data.GraphViz.Attributes.Complete
 import Data.Map
--- import Data.Text.Lazy
 
 type Edge = Word
 

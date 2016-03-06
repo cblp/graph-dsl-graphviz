@@ -8,9 +8,8 @@ import Data.GraphViz.Attributes
 import Data.GraphViz.Attributes.Complete (Attribute(RankDir), RankDir(FromLeft))
 import Data.GraphViz.Attributes.HTML (TextItem(Str))
 import Data.GraphViz.Types.Generalised (DotGraph)
-import Data.GraphViz.Types.Monadic (Dot, DotM, (-->), digraph', graphAttrs, node')
-import Data.GraphViz.Helpers (formatBold, label, labelHtml, newlineLeft)
-import Data.Text.Lazy (Text)
+import Data.GraphViz.Types.Monadic (Dot, (-->), digraph', graphAttrs, node')
+import Data.GraphViz.Helpers
 
 type Node = Attributes
 -- type Edge = (Node, Node)
@@ -51,13 +50,10 @@ mytasks = digraph' $ do
         , "quis nostrud exercitation ullamco" ]
 
   where
-    boxNode :: Attributes -> DotM Node Node
     boxNode attrs = node' (shape BoxShape : style filled : attrs) $> attrs
 
-    project :: Text -> DotM Node Node
     project name = boxNode [fillColor Pink, label name]
 
-    task :: [Text] -> DotM Node Node
     task textLines = boxNode [fillColor LightYellow, content]
       where
         content = case textLines of
