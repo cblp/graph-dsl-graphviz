@@ -1,14 +1,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 import Control.Monad (void)
-import Data.Foldable
+import Data.Foldable (traverse_)
 import Data.Graph.Builder.GraphViz
 import Data.GraphViz (DotGraph, GraphvizOutput(Svg), runGraphviz)
 import Data.GraphViz.Attributes
-import Data.GraphViz.Attributes.Complete as Common
-import Data.GraphViz.Attributes.HTML as HTML
+import Data.GraphViz.Attributes.Complete (Attribute(RankDir), RankDir(FromLeft))
+import Data.GraphViz.Attributes.HTML (TextItem(Str))
 import Data.GraphViz.Helpers
-import Data.Text.Lazy ()
 
 mytasks :: DotGraph Node
 mytasks = digraph [RankDir FromLeft] $ do
