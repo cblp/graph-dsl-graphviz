@@ -1,6 +1,6 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
-module Data.Graph.Builder.Graphviz
+module Data.Graph.Builder.GraphViz
     (GraphBuilder, Node, buildGraph, edge, edge_, node) where
 
 import Control.Monad.State
