@@ -1,7 +1,7 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
 module Data.Graph.Builder.GraphViz
-    (GraphBuilder, Node, buildGraph, edge, edge_, node) where
+    (GraphBuilder, Node, buildGraph, edge, edge', edges, edges', node) where
 
 import Control.Monad.State
 import Data.Graph.Inductive (Node)
@@ -51,8 +51,16 @@ edge (n1, n2) attrs = do
         }
     pure newEdge
 
-edge_ :: (Node, Node) -> GraphBuilderM Edge
-edge_ ns = edge ns []
+-- | 'edge' without attributes
+edge' :: (Node, Node) -> GraphBuilderM Edge
+edge' ns = edge ns []
+
+edges :: [Node] -> Attributes -> GraphBuilderM [Edge]
+edges []    _     = pure []
+edges nodes attrs = zipWithM (\n1 n2 -> edge (n1, n2) attrs) nodes (tail nodes)
+
+edges' :: [Node] -> GraphBuilderM [Edge]
+edges' nodes = edges nodes []
 
 buildGraph :: GraphBuilder -> DotGraph Node
 buildGraph builder = let

@@ -29,8 +29,8 @@ bold = Format Bold
 labelHtml :: Text -> Common.Attribute
 labelHtml = Label . HtmlLabel . Text
 
-labelText :: Text.Text -> Common.Attribute
-labelText = Label . StrLabel
+label :: Text.Text -> Common.Attribute
+label = Label . StrLabel
 
 newline, newlineLeft :: TextItem
 newline = Newline []
