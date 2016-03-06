@@ -9,22 +9,22 @@ import Data.GraphViz.Helpers
 mytasks :: DotGraph Node
 mytasks = digraph [RankDir FromLeft] $ do
     t1 <- node
-        [ labelHtml [ bold "Lorem ipsum dolor sit amet,",   newlineLeft
-                    , "consectetur adipisicing elit,",      newlineLeft
-                    , "sed do eiusmod tempor incididunt",   newlineLeft
-                    , "ut labore et dolore magna aliqua.",  newlineLeft ] ]
+        [ labelHtml [ formatBold "Lorem ipsum dolor sit amet,", newlineLeft
+                    , "consectetur adipisicing elit,",          newlineLeft
+                    , "sed do eiusmod tempor incididunt",       newlineLeft
+                    , "ut labore et dolore magna aliqua.",      newlineLeft ] ]
     t2 <- node
-        [ labelHtml [ bold "Ut enim ad minim veniam,",      newlineLeft
-                    , "quis nostrud exercitation ullamco",  newlineLeft
-                    , "laboris nisi ut aliquip",            newlineLeft
-                    , "ex ea commodo consequat.",           newlineLeft ] ]
+        [ labelHtml [ formatBold "Ut enim ad minim veniam,",  newlineLeft
+                    , "quis nostrud exercitation ullamco",    newlineLeft
+                    , "laboris nisi ut aliquip",              newlineLeft
+                    , "ex ea commodo consequat.",             newlineLeft ] ]
     t3 <- node
-        [ labelHtml [ bold "Duis aute irure dolor",         newlineLeft
-                    , "in reprehenderit in voluptate",      newlineLeft
-                    , "velit esse cillum dolore",           newlineLeft
-                    , "eu fugiat nulla pariatur.",          newlineLeft ] ]
+        [ labelHtml [ formatBold "Duis aute irure dolor", newlineLeft
+                    , "in reprehenderit in voluptate",    newlineLeft
+                    , "velit esse cillum dolore",         newlineLeft
+                    , "eu fugiat nulla pariatur.",        newlineLeft ] ]
     t4 <- node
-        [ labelHtml [ bold "Excepteur sint occaecat",       newlineLeft
+        [ labelHtml [ formatBold "Excepteur sint occaecat", newlineLeft
                     , "cupidatat non proident,",            newlineLeft
                     , "sunt in culpa qui officia deserunt", newlineLeft
                     , "mollit anim id est laborum.",        newlineLeft ] ]

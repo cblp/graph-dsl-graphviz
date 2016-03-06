@@ -4,7 +4,7 @@ import Control.Monad (void)
 import Data.Foldable
 import Data.Graph.Builder.GraphViz
 import Data.GraphViz (DotGraph, GraphvizOutput(Svg), runGraphviz)
-import Data.GraphViz.Attributes.Colors.SVG
+import Data.GraphViz.Attributes
 import Data.GraphViz.Attributes.Complete as Common
 import Data.GraphViz.Attributes.HTML as HTML
 import Data.GraphViz.Helpers
@@ -38,19 +38,22 @@ mytasks = digraph [RankDir FromLeft] $ do
         , "ut labore et dolore magna aliqua"
         , "Ut enim ad minim veniam"
         , "quis nostrud exercitation ullamco" ]
+
   where
-    box attrs = node (Shape BoxShape : attrs)
-    project name = box [Style [SItem Filled []], FillColor lightYellow, label name]
-    lightYellow = [toWC $ SVGColor LightYellow]
-    task textLines = box [content]
+    boxNode attrs = node (shape BoxShape : attrs)
+
+    project name = boxNode [style filled, fillColor LightYellow, label name]
+
+    task textLines = boxNode [content]
       where
         content = case textLines of
             [] -> label "<no text>"
             [oneLine] -> label oneLine
             _ -> labelHtml $ let
                 firstLine : otherLines = map Str textLines
-                textLines' = bold [firstLine] : otherLines
-                in concatMap (: [newlineLeft]) textLines'
+                htmlLines = formatBold [firstLine] : otherLines
+                in concatMap (: [newlineLeft]) htmlLines
+
     taskWithProject prjNode textLines = do
         tsk <- task textLines
         void $ edge' (tsk, prjNode)

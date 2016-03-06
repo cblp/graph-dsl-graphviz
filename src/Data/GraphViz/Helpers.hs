@@ -12,7 +12,10 @@ import Data.GraphViz.Attributes.HTML as HTML  ( Align(HLeft)
                                               , Format(Bold)
                                               , Label(Text)
                                               , Text
-                                              , TextItem(Format, Newline, Str)
+                                              , TextItem  ( Newline
+                                                          , Format
+                                                          , Str
+                                                          )
                                               )
 import qualified Data.Text.Lazy as Text
 import Data.String (IsString(fromString))
@@ -23,8 +26,9 @@ instance IsString TextItem where
 instance IsString Text where
     fromString = pure . fromString
 
-bold :: Text -> TextItem
-bold = Format Bold
+-- | Bold formatter for HTML labels
+formatBold :: Text -> TextItem
+formatBold = Format Bold
 
 labelHtml :: Text -> Common.Attribute
 labelHtml = Label . HtmlLabel . Text
