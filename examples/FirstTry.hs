@@ -6,7 +6,7 @@ import Data.GraphViz
 import Data.GraphViz.Attributes.Complete
 import Data.GraphViz.Helpers
 
-mytasks :: DotGraph Node
+mytasks :: Graph
 mytasks = digraph [RankDir FromLeft] $ do
     t1 <- node
         [ htmlLabel [ formatBold "Lorem ipsum dolor sit amet,", newlineLeft

@@ -1,12 +1,13 @@
 {-# LANGUAGE NamedFieldPuns #-}
 
 module Data.Graph.Builder.GraphViz
-    (GraphBuilder, Node, (-->), digraph, edge, edge', edges, edges', node) where
+    ( Edge, Graph, GraphBuilder, Node
+    , (-->), digraph, edge, edge', edges, edges', node
+    ) where
 
 import Control.Monad.State
-import Data.Graph.Inductive (Node)
-import qualified Data.Graph.Inductive as Graph
-import Data.Graph.Inductive.PatriciaTree
+import qualified Data.Graph.Inductive as Inductive
+import Data.Graph.Inductive.PatriciaTree (Gr)
 import Data.GraphViz  ( DotGraph
                       , GlobalAttributes(GraphAttrs)
                       , GraphvizParams(fmtNode, globalAttributes)
@@ -15,19 +16,24 @@ import Data.GraphViz  ( DotGraph
 import Data.GraphViz.Attributes.Complete
 import Data.Map
 
-type Edge = Word
+type NodeImpl = Inductive.Node
+newtype Node = Node NodeImpl
 
-type Graph = Gr () Edge
+type EdgeImpl = Word
+newtype Edge = Edge EdgeImpl
+
+type GraphImpl = Gr () EdgeImpl
+type Graph = DotGraph Inductive.Node
 
 data BuilderState = BuilderState
-    { graph :: Graph
-    , nodeAttributes :: Map Node Attributes
-    , edgeAttributes :: Map Edge Attributes
+    { graph :: GraphImpl
+    , nodeAttributes :: Map NodeImpl Attributes
+    , edgeAttributes :: Map EdgeImpl Attributes
     }
 
 newBuilder :: BuilderState
 newBuilder = BuilderState
-    {graph = Graph.empty, nodeAttributes = mempty, edgeAttributes = mempty}
+    {graph = Inductive.empty, nodeAttributes = mempty, edgeAttributes = mempty}
 
 type GraphBuilderM r = State BuilderState r
 
@@ -38,20 +44,20 @@ node attrs = do
     builderState@BuilderState{graph, nodeAttributes} <- get
     let newNode = length nodeAttributes
     put builderState
-        { graph = Graph.insNode (newNode, ()) graph
+        { graph = Inductive.insNode (newNode, ()) graph
         , nodeAttributes = insert newNode attrs nodeAttributes
         }
-    pure newNode
+    pure $ Node newNode
 
 edge :: Node -> Node -> Attributes -> GraphBuilderM Edge
-edge n1 n2 attrs = do
+edge (Node n1) (Node n2) attrs = do
     builderState@BuilderState{edgeAttributes, graph} <- get
     let newEdge = fromIntegral $ length edgeAttributes
     put builderState
-        { graph = Graph.insEdge (n1, n2, newEdge) graph
+        { graph = Inductive.insEdge (n1, n2, newEdge) graph
         , edgeAttributes = insert newEdge attrs edgeAttributes
         }
-    pure newEdge
+    pure $ Edge newEdge
 
 -- | 'edge' without attributes
 edge' :: Node -> Node -> GraphBuilderM Edge
@@ -70,7 +76,7 @@ edges' nodes = edges nodes []
 
 digraph :: Attributes -- ^ graph attributes
         -> GraphBuilder
-        -> DotGraph Node
+        -> Graph
 digraph graphAttributes builder = let
     BuilderState{graph, nodeAttributes{-, edgeAttributes-}} =
         execState builder newBuilder

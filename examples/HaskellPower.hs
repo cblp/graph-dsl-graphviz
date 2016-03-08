@@ -8,7 +8,7 @@ import Data.GraphViz.Attributes.Complete
 import Data.GraphViz.Attributes.HTML as HTML
 import Data.GraphViz.Helpers
 
-mytasks :: DotGraph Node
+mytasks :: Graph
 mytasks = digraph [RankDir FromLeft] $ do
     p <- project "Lorem ipsum"
     t1 <- task
