@@ -5,7 +5,7 @@
 module Data.GraphViz.Helpers where
 
 import Data.GraphViz.Attributes.Complete as Common  ( Attribute(Label)
-                                                    , Label(HtmlLabel, StrLabel)
+                                                    , Label(HtmlLabel)
                                                     )
 import Data.GraphViz.Attributes.HTML as HTML  ( Align(HLeft)
                                               , Attribute(Align)
@@ -14,7 +14,6 @@ import Data.GraphViz.Attributes.HTML as HTML  ( Align(HLeft)
                                               , Text
                                               , TextItem(Newline, Format, Str)
                                               )
-import qualified Data.Text.Lazy as Text
 import Data.String (IsString(fromString))
 
 instance IsString TextItem where
@@ -27,11 +26,8 @@ instance IsString Text where
 formatBold :: Text -> TextItem
 formatBold = Format Bold
 
-labelHtml :: Text -> Common.Attribute
-labelHtml = Label . HtmlLabel . Text
-
-label :: Text.Text -> Common.Attribute
-label = Label . StrLabel
+htmlLabel :: Text -> Common.Attribute
+htmlLabel = Label . HtmlLabel . Text
 
 newline, newlineLeft :: TextItem
 newline = Newline []

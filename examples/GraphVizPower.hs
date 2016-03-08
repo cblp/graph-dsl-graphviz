@@ -52,14 +52,14 @@ mytasks = digraph' $ do
   where
     boxNode attrs = node' (shape BoxShape : style filled : attrs) $> attrs
 
-    project name = boxNode [fillColor Pink, label name]
+    project name = boxNode [fillColor Pink, textLabel name]
 
     task textLines = boxNode [fillColor LightYellow, content]
       where
         content = case textLines of
-            []        -> label "<no text>"
-            [oneLine] -> label oneLine
-            _         -> labelHtml $ let
+            []        -> textLabel "<no text>"
+            [oneLine] -> textLabel oneLine
+            _         -> htmlLabel $ let
                 firstLine : otherLines = map Str textLines
                 htmlLines = formatBold [firstLine] : otherLines
                 in concatMap (: [newlineLeft]) htmlLines
